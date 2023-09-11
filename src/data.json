@@ -1,0 +1,51 @@
+
+[{
+    "name": "Scarlet Witch",
+    "age": 30,
+    "email": "scarletwitch@example.com",
+    "address": {
+      "street": "123 Main St",
+      "city": "Nelli",
+      "state": "TN",
+      "postal_code": "12345"
+    },
+    "phone_numbers": [
+      "234-4758",
+      "333-3672"
+    ]
+   
+  },
+
+  {
+    "name": "Thor",
+    "age": 300,
+    "email": "thor@example.com",
+    "address": {
+      "street": "345 Main St",
+      "city": "Tenkasi",
+      "state": "TN",
+      "postal_code": "54321"
+    },
+    "phone_numbers": [
+      "555-1234",
+      "555-5678"
+    ]
+  },
+
+  {
+    "name": "Iron Man",
+    "age": 60,
+    "email": "ironman@example.com",
+    "address": {
+      "street": "567 Main St",
+      "city": "Nallur",
+      "state": "TN",
+      "postal_code": "13579"
+    },
+    "phone_numbers": [
+      "789-2893",
+      "138-7890"
+    ]
+  }
+]
+  
