@@ -1,37 +1,31 @@
 package com.sample;
+
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-class JsonUsingGson{
+class Address {
+    private String street;
+    private String city;
+    private String state;
+    private String postal_code;
 
-    private String name;
-    private int age;
-    private String email;
-
-    public String getName() {
-        return name;
+    @Override
+    public String toString() {
+        return street + ", " + city + ", " + state + " " + postal_code;
     }
-    
-    public int getAge() {
-        return age;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
- public String toString(){
-        return "Name :"+name+" Age: "+age+" Email: "+email;
-    }
-
-
 }
+
+
 
 public class JsonReader {
 
@@ -39,21 +33,37 @@ public class JsonReader {
 
         try(FileReader reader =new FileReader("src/data.json")) {
             Gson gson =new Gson();
-            List<Map<String,Object>> listOfMap=new ArrayList<>();
+            JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
 
-            List<JsonUsingGson> usingJson = gson.fromJson(reader, new TypeToken<List<JsonUsingGson>>(){}.getType());
+            for (JsonElement jsonElement : jsonArray) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                //System.out.println(jsonObject);
 
-            for(JsonUsingGson data:usingJson){
-                Map<String,Object> map=new HashMap<>();
+                Map<String, Object> userData = new HashMap<>();
 
-                map.put("name", data.getName());
-                map.put("age", data.getAge());
-                map.put("email",data.getEmail());
+                for (String key : jsonObject.keySet()) {
+                    JsonElement value = jsonObject.get(key);
+                    if (value.isJsonPrimitive()) {
+                        userData.put(key, value.getAsString());
+                    } else if (value.isJsonObject()) {
+                        Address address = gson.fromJson(value, Address.class);
+                        userData.put(key, address);
+                    } else if (value.isJsonArray()) {
+                        JsonArray jsonArrayValue = value.getAsJsonArray();
+                        if (jsonArrayValue.size() > 0 && jsonArrayValue.get(0).isJsonPrimitive()) {
+                            String[] stringArray = new String[jsonArrayValue.size()];
+                            for (int i = 0; i < jsonArrayValue.size(); i++) {
+                                stringArray[i] = jsonArrayValue.get(i).getAsString();
+                            }
+                            userData.put(key, Arrays.toString(stringArray));
+                        }
+                    }
+                }
 
-                listOfMap.add(map);
+                System.out.println(userData);
             }
+            
 
-            System.out.println(listOfMap);
         }
         catch(Exception e){
             e.getStackTrace();
