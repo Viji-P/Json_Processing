@@ -2,28 +2,29 @@ package com.sample.getParticularJsonData;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class GetJsonData{
     public static void main(String[] args) {
 
-        ObjectMapper mapper =new ObjectMapper();
         
         File filepath=new File("src//DisposalInstructionStep.json");
 
-        Map<String,Object> jsonMap =convertToMap(filepath,mapper);
+        Map<String,Object> jsonMap =convertToMap(filepath);
 
         if(jsonMap != null){
-           getParticularJsonData(jsonMap,mapper);
+           getParticularJsonData(jsonMap);
         }
     }
 
     
 
-    private static Map<String, Object> convertToMap(File filepath, ObjectMapper mapper) {
+    private static Map<String, Object> convertToMap(File filepath) {
+
+        ObjectMapper mapper =new ObjectMapper();
 
         try {
                 return mapper.readValue(filepath, Map.class);
@@ -36,20 +37,24 @@ public class GetJsonData{
         return null;
     }
     
-    private static void getParticularJsonData(Map<String, Object> jsonMap, ObjectMapper mapper) {
+    private static void getParticularJsonData(Map<String, Object> jsonMap) {
 
         try {
-            JsonNode rootNode=mapper.convertValue(jsonMap, JsonNode.class);
+            List<Map<String,Object>>dMap=(List<Map<String, Object>>) jsonMap.get("data");
 
-            JsonNode dataNode = rootNode.get("data");
-                for (JsonNode node : dataNode) {
-                        for (JsonNode purposeCode : node.get("FG_TRD_PURPOSE_CODE")) {
-                            double amt= purposeCode.get("AMT").asDouble();
-    
-                            System.out.println("Amount: " + amt);
-                        }
-                    }
-               
+            for(Map<String,Object> node:dMap){
+
+                List<Map<String,Object>> node2=(List<Map<String, Object>>) node.get("FG_TRD_PURPOSE_CODE");
+
+                for(Map<String,Object> node3 :node2){
+                    Object amt=node3.get("AMT");
+
+                    System.out.println(amt);
+
+                }
+                }
+            
+            
         } catch (Exception e) {
             
             e.printStackTrace();
