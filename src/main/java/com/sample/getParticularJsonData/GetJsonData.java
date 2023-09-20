@@ -42,12 +42,12 @@ public class GetJsonData{
         try {
             List<Map<String,Object>>dMap=(List<Map<String, Object>>) jsonMap.get("data");
 
-            for(Map<String,Object> node:dMap){
+            for(Map<String,Object> dataNode:dMap){
 
-                List<Map<String,Object>> node2=(List<Map<String, Object>>) node.get("FG_TRD_PURPOSE_CODE");
+                List<Map<String,Object>> purposeCodeList=(List<Map<String, Object>>) dataNode.get("FG_TRD_PURPOSE_CODE");
 
-                for(Map<String,Object> node3 :node2){
-                    Object amt=node3.get("AMT");
+                for(Map<String,Object> purposeCode :purposeCodeList){
+                    Object amt=purposeCode.get("AMT");
 
                     System.out.println(amt);
 
